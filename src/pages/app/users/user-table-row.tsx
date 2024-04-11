@@ -23,7 +23,7 @@ export function UserTableRow({ user, onDetailsClose }: UserTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   return (
-    <TableRow className="hover:bg-blue-50">
+    <TableRow>
       <TableCell>
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
