@@ -13,15 +13,15 @@ describe('Pagination', () => {
   it('should display the right amount of pages and results', () => {
     const wrapper = render(
       <Pagination
-        pageIndex={0}
+        pageIndex={1}
         totalCount={200}
         perPage={10}
         onPageChange={onPageChangeCallback}
       />,
     )
 
-    expect(wrapper.getByText('Página 1 de 20')).toBeInTheDocument()
-    expect(wrapper.getByText('Total de 200 item(s)')).toBeInTheDocument()
+    expect(wrapper.getByText('Page 1 of 20')).toBeInTheDocument()
+    expect(wrapper.getByText('Total of 200 item(s)')).toBeInTheDocument()
   })
 
   it('should be able to navigate to the next page', async () => {
@@ -37,7 +37,7 @@ describe('Pagination', () => {
     )
 
     const nextPageButton = wrapper.getByRole('button', {
-      name: 'Próxima página',
+      name: 'Next page',
     })
 
     await user.click(nextPageButton)
@@ -58,7 +58,7 @@ describe('Pagination', () => {
     )
 
     const nextPageButton = wrapper.getByRole('button', {
-      name: 'Página anterior',
+      name: 'Previous page',
     })
 
     await user.click(nextPageButton)
@@ -79,12 +79,12 @@ describe('Pagination', () => {
     )
 
     const nextPageButton = wrapper.getByRole('button', {
-      name: 'Primeira página',
+      name: 'First page',
     })
 
     await user.click(nextPageButton)
 
-    expect(onPageChangeCallback).toHaveBeenCalledWith(0)
+    expect(onPageChangeCallback).toHaveBeenCalledWith(1)
   })
 
   it('should be able to navigate to the last page', async () => {
@@ -100,11 +100,11 @@ describe('Pagination', () => {
     )
 
     const nextPageButton = wrapper.getByRole('button', {
-      name: 'Última página',
+      name: 'Last page',
     })
 
     await user.click(nextPageButton)
 
-    expect(onPageChangeCallback).toHaveBeenCalledWith(19)
+    expect(onPageChangeCallback).toHaveBeenCalledWith(20)
   })
 })
