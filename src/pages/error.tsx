@@ -1,7 +1,7 @@
 import { Link, useRouteError } from 'react-router-dom'
 
 export function Error() {
-  const error = useRouteError()
+  const error = useRouteError() as Error
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-2">
@@ -13,7 +13,7 @@ export function Error() {
       <p className="text-accent-foreground">
         Back to the{' '}
         <Link to="/" className="text-sky-500 dark:text-sky-400">
-          Blackjack Game
+          ROMTech Challenge
         </Link>
       </p>
     </div>

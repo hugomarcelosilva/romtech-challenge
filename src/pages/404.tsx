@@ -7,7 +7,7 @@ export function NotFound() {
       <p className="text-accent-foreground">
         Back to the{' '}
         <Link to="/" className="text-sky-500 dark:text-sky-400">
-          Blackjack Game
+          ROMTech Challenge
         </Link>
       </p>
     </div>
