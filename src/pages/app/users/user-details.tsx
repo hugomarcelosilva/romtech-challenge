@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { getUserDetails } from '@/api/get-user-details'
+import { GetUsersResponse } from '@/api/get-users'
 import { updateUser } from '@/api/update-user'
 import { Button } from '@/components/ui/button'
 import {
@@ -23,6 +24,15 @@ import { UserDetailsSkeleton } from './user-details-skeleton'
 export interface UserDetailsProps {
   id: string
   open: boolean
+  usersQueryKey: (
+    | string
+    | number
+    | {
+        field: string
+        direction: string
+      }
+    | null
+  )[]
   closeDialog: () => void
 }
 
@@ -36,7 +46,12 @@ const storeUserSchema = z.object({
 
 type StoreUserSchema = z.infer<typeof storeUserSchema>
 
-export function UserDetails({ id, open, closeDialog }: UserDetailsProps) {
+export function UserDetails({
+  id,
+  open,
+  usersQueryKey,
+  closeDialog,
+}: UserDetailsProps) {
   const queryClient = useQueryClient()
 
   const { data: user } = useQuery({
@@ -47,6 +62,24 @@ export function UserDetails({ id, open, closeDialog }: UserDetailsProps) {
 
   const { mutateAsync: updateProfileFn } = useMutation({
     mutationFn: updateUser,
+    onMutate: async (updatedUser) => {
+      await queryClient.cancelQueries({ queryKey: usersQueryKey })
+      const previousUsers = queryClient.getQueryData(usersQueryKey)
+
+      if (previousUsers) {
+        queryClient.setQueryData<GetUsersResponse[]>(usersQueryKey, (old) => {
+          return old?.map((user) =>
+            user.id === updatedUser.id ? { ...user, ...updatedUser } : user,
+          )
+        })
+      }
+      return { previousUsers }
+    },
+    onError: (_, __, context) => {
+      if (context?.previousUsers) {
+        queryClient.setQueryData(usersQueryKey, context.previousUsers)
+      }
+    },
   })
 
   async function handleUpdateProfile(data: StoreUserSchema) {
@@ -62,6 +95,7 @@ export function UserDetails({ id, open, closeDialog }: UserDetailsProps) {
 
       queryClient.invalidateQueries({
         queryKey: ['users'],
+        refetchType: 'inactive',
       })
 
       toast.success('User updated!')

@@ -16,10 +16,23 @@ interface UserTableRowProps {
     address: string
     city: string
   }
+  usersQueryKey: (
+    | string
+    | number
+    | {
+        field: string
+        direction: string
+      }
+    | null
+  )[]
   setTableWidth: (width: number | undefined) => void
 }
 
-export function UserTableRow({ user, setTableWidth }: UserTableRowProps) {
+export function UserTableRow({
+  user,
+  usersQueryKey,
+  setTableWidth,
+}: UserTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   useEffect(() => {
@@ -44,6 +57,7 @@ export function UserTableRow({ user, setTableWidth }: UserTableRowProps) {
           <UserDetails
             open={isDetailsOpen}
             id={user.id}
+            usersQueryKey={usersQueryKey}
             closeDialog={() => setIsDetailsOpen(false)}
           />
         </Dialog>

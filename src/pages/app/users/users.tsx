@@ -30,8 +30,10 @@ export function Users() {
 
   const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
 
+  const usersQueryKey = ['users', pageIndex, id, name, sort]
+
   const { data: result, isLoading: isLoadingUsers } = useQuery({
-    queryKey: ['users', pageIndex, id, name, sort],
+    queryKey: usersQueryKey,
     queryFn: () =>
       getUsers({
         _page: pageIndex,
@@ -132,6 +134,7 @@ export function Users() {
                       <UserTableRow
                         key={user.id}
                         user={user}
+                        usersQueryKey={usersQueryKey}
                         setTableWidth={setTableWidth}
                       />
                     )
