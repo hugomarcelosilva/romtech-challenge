@@ -18,7 +18,7 @@ export function UserTableSkeleton() {
           <Skeleton className="h-4 w-[100px]" />
         </TableCell>
         <TableCell>
-          <Skeleton className="h-4 w-[148px]" />
+          <Skeleton className="h-4 w-[120px]" />
         </TableCell>
         <TableCell>
           <Skeleton className="h-4 w-[110px]" />

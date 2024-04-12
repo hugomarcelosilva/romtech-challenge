@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -16,11 +16,19 @@ interface UserTableRowProps {
     address: string
     city: string
   }
-  onDetailsClose: () => void
+  setTableWidth: (width: number | undefined) => void
 }
 
-export function UserTableRow({ user, onDetailsClose }: UserTableRowProps) {
+export function UserTableRow({ user, setTableWidth }: UserTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+
+  useEffect(() => {
+    if (isDetailsOpen) {
+      setTableWidth(10)
+    } else {
+      setTableWidth(undefined)
+    }
+  }, [isDetailsOpen, setTableWidth])
 
   return (
     <TableRow>
@@ -36,10 +44,7 @@ export function UserTableRow({ user, onDetailsClose }: UserTableRowProps) {
           <UserDetails
             open={isDetailsOpen}
             id={user.id}
-            closeDialog={() => {
-              setIsDetailsOpen(false)
-              onDetailsClose()
-            }}
+            closeDialog={() => setIsDetailsOpen(false)}
           />
         </Dialog>
       </TableCell>

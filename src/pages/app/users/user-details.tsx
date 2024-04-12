@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -37,6 +37,8 @@ const storeUserSchema = z.object({
 type StoreUserSchema = z.infer<typeof storeUserSchema>
 
 export function UserDetails({ id, open, closeDialog }: UserDetailsProps) {
+  const queryClient = useQueryClient()
+
   const { data: user } = useQuery({
     queryKey: ['user', id],
     queryFn: () => getUserDetails({ id }),
@@ -56,6 +58,10 @@ export function UserDetails({ id, open, closeDialog }: UserDetailsProps) {
         phone: data.phone,
         address: data.address,
         city: data.city,
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ['users'],
       })
 
       toast.success('User updated!')
@@ -87,59 +93,52 @@ export function UserDetails({ id, open, closeDialog }: UserDetailsProps) {
         <DialogDescription>Update the user details</DialogDescription>
       </DialogHeader>
 
-      <form onSubmit={handleSubmit(handleUpdateProfile)}>
+      <form
+        onSubmit={handleSubmit(handleUpdateProfile)}
+        className="flex flex-col justify-between"
+      >
         {user ? (
           <div className="space-y-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right" htmlFor="name">
-                Name
-              </Label>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="name">Name</Label>
               <Input
-                className="col-span-3 bg-input text-foreground border border-input focus:ring-2 focus:ring-ring"
+                className="col-span-3 border border-input text-foreground focus:ring-2 focus:ring-ring"
                 id="name"
                 {...register('name')}
               />
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right" htmlFor="email">
-                E-mail
-              </Label>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="email">E-mail</Label>
               <Input
-                className="col-span-3 bg-input text-foreground border border-input focus:ring-2 focus:ring-ring"
+                className="col-span-3 border border-input text-foreground focus:ring-2 focus:ring-ring"
                 id="email"
                 {...register('email')}
               />
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right" htmlFor="phone">
-                Phone
-              </Label>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="phone">Phone</Label>
               <Input
-                className="col-span-3 bg-input text-foreground border border-input focus:ring-2 focus:ring-ring"
+                className="col-span-4 border border-input text-foreground focus:ring-2 focus:ring-ring"
                 id="phone"
                 {...register('phone')}
               />
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right" htmlFor="address">
-                Address
-              </Label>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="address">Address</Label>
               <Input
-                className="col-span-3 bg-input text-foreground border border-input focus:ring-2 focus:ring-ring"
+                className="col-span-4 border border-input text-foreground focus:ring-2 focus:ring-ring"
                 id="address"
                 {...register('address')}
               />
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right" htmlFor="city">
-                City
-              </Label>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="city">City</Label>
               <Input
-                className="col-span-3 bg-input text-foreground border border-input focus:ring-2 focus:ring-ring"
+                className="col-span-4 border border-input text-foreground focus:ring-2 focus:ring-ring"
                 id="city"
                 {...register('city')}
               />

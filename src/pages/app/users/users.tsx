@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useSearchParams } from 'react-router-dom'
@@ -19,8 +19,9 @@ import { UserTableRow } from './user-table-row'
 import { UserTableSkeleton } from './user-table-skeleton'
 
 export function Users() {
-  const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
+
+  const [tableWidth, setTableWidth] = useState<number | undefined>(undefined)
 
   const [sort, setSort] = useState({ field: 'name', direction: 'asc' })
 
@@ -30,7 +31,7 @@ export function Users() {
   const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
 
   const { data: result, isLoading: isLoadingUsers } = useQuery({
-    queryKey: ['users', pageIndex, id, name, sort.field, sort.direction],
+    queryKey: ['users', pageIndex, id, name, sort],
     queryFn: () =>
       getUsers({
         _page: pageIndex,
@@ -39,10 +40,6 @@ export function Users() {
         _order: sort.direction,
       }),
   })
-
-  function handleDetailsClose() {
-    queryClient.invalidateQueries({ queryKey: ['users'] })
-  }
 
   function handlePaginate(pageIndex: number) {
     setSearchParams((state) => {
@@ -71,36 +68,58 @@ export function Users() {
         <div className="space-y-2.5">
           <UserTableFilters />
 
-          <div className="rounded-md border">
-            <Table>
+          <div
+            className={`rounded-md border ${
+              tableWidth && tableWidth > 0
+                ? `w-[calc(100%-${tableWidth}rem)]`
+                : 'w-full'
+            }`}
+          >
+            <Table
+              className={
+                tableWidth && tableWidth > 0
+                  ? `w-[calc(100%-${tableWidth}rem)]`
+                  : 'w-full'
+              }
+            >
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[64px] bg-blue-300 "></TableHead>
-                  <TableHead className="w-[140px] bg-blue-300 text-white">
-                    ID
+                  <TableHead
+                    className="w-[140px] cursor-pointer bg-blue-300 text-white"
+                    onClick={() => handleSort('id')}
+                  >
+                    ID {sort.direction === 'asc' ? '↑' : '↓'}
                   </TableHead>
                   <TableHead
-                    className="w-[180px] cursor-pointer bg-blue-300 text-white"
+                    className="w-[120px] cursor-pointer bg-blue-300 text-white"
                     onClick={() => handleSort('name')}
                   >
-                    Name{' '}
-                    {sort.field === 'name'
-                      ? sort.direction === 'asc'
-                        ? '↑'
-                        : '↓'
-                      : ''}
+                    Name {sort.direction === 'asc' ? '↑' : '↓'}
                   </TableHead>
-                  <TableHead className="w-[140px] bg-blue-300 text-white">
-                    Email
+                  <TableHead
+                    className="w-[140px] cursor-pointer bg-blue-300 text-white"
+                    onClick={() => handleSort('email')}
+                  >
+                    Email {sort.direction === 'asc' ? '↑' : '↓'}
                   </TableHead>
-                  <TableHead className="w-[140px] bg-blue-300 text-white">
-                    Phone
+                  <TableHead
+                    className="w-[140px] cursor-pointer bg-blue-300 text-white"
+                    onClick={() => handleSort('phone')}
+                  >
+                    Phone {sort.direction === 'asc' ? '↑' : '↓'}
                   </TableHead>
-                  <TableHead className="w-[140px] bg-blue-300 text-white">
-                    Address
+                  <TableHead
+                    className="w-[140px] cursor-pointer bg-blue-300 text-white"
+                    onClick={() => handleSort('address')}
+                  >
+                    Address {sort.direction === 'asc' ? '↑' : '↓'}
                   </TableHead>
-                  <TableHead className="w-[140px] bg-blue-300 text-white">
-                    City
+                  <TableHead
+                    className="w-[140px] cursor-pointer bg-blue-300 text-white"
+                    onClick={() => handleSort('city')}
+                  >
+                    City {sort.direction === 'asc' ? '↑' : '↓'}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -113,7 +132,7 @@ export function Users() {
                       <UserTableRow
                         key={user.id}
                         user={user}
-                        onDetailsClose={handleDetailsClose}
+                        setTableWidth={setTableWidth}
                       />
                     )
                   })}
