@@ -6,7 +6,7 @@
       "email": "user1@example.com",
       "phone": "123-456-7890",
       "address": "101 Main St test",
-      "city": "Anytown"
+      "city": "New York"
     },
     {
       "id": "03ea2a8b-03b6-4a5e-ae0d-b8079003ff48",
@@ -14,7 +14,7 @@
       "email": "user2@example.com",
       "phone": "234-567-8901",
       "address": "102 Main St test",
-      "city": "Anytown"
+      "city": "Manhattan"
     },
     {
       "id": "3a7aa17c-f533-4fc9-b40a-4c11710ffb12",
@@ -22,7 +22,7 @@
       "email": "user3@example.com",
       "phone": "345-678-9012",
       "address": "103 Main St",
-      "city": "Anytown"
+      "city": "Massachusetts"
     },
     {
       "id": "38388727-2f20-47f2-b439-b04cfaa6634c",
@@ -30,15 +30,15 @@
       "email": "user4@example.com",
       "phone": "456-789-0123",
       "address": "104 Main St",
-      "city": "Anytown"
+      "city": "Atlanta"
     },
     {
+      "id": "35d2ef44-8945-460f-983b-2065e9380805",
       "name": "Felipe Doe",
       "email": "user5@example.com",
       "phone": "567-890-1234",
       "address": "105 Main St",
-      "city": "New York",
-      "id": "35d2ef44-8945-460f-983b-2065e9380805"
+      "city": "Alabama"
     },
     {
       "id": "a4c32e83-551d-4825-b7ff-6dbf2af3c310",
@@ -81,8 +81,8 @@
       "city": "Anytown"
     },
     {
-      "name": "Alannah Doe",
-      "email": "user11@example.com",
+      "name": "Alannah Gordon",
+      "email": "alannah@example.com",
       "phone": "123-456-7890",
       "address": "111 Main St",
       "city": "Anytown",
